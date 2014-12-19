@@ -25,9 +25,7 @@ function clickEvent(){
     // Unityのloginを呼び出す
     u.getUnity().SendMessage("CommMilkcocoa","login",textName.value);
   }
-
-  var text = textArea.value;
-  sendText(text);
+  u.getUnity().SendMessage("CommMilkcocoa","setMessage",textArea.value);
 }
 
 function sendText(text){
@@ -55,4 +53,12 @@ function login_error() {
   document.getElementById("btn").textContent = "login";
   alert("同じ名前のユーザーがすでにいます。");
 }
+
+function sendMyData(dt) {
+  chatDataStore.send(dt);
+}
+
+chatDataStore.on("send",function(data){
+  u.getUnity().SendMessage("CommMilkcocoa","updateData",data.value);
+});
 
