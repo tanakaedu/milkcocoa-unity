@@ -87,7 +87,7 @@ public class CMilkcocoa : MonoBehaviour {
 			goPlayers = GameObject.FindGameObjectsWithTag ("Player");
 		}
 		// データを設定
-		go.SendMessage("setMessage",param[1]+","+param[2]+","+param[3]);
+		go.SendMessage("setMessage",param[1]);
 		go.GetComponent<CAnother>().setTarget(
 			float.Parse(param[2]),
 			float.Parse(param[3]),
