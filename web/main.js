@@ -22,7 +22,8 @@ function clickEvent(){
   if (!isLogin) {
     isLogin = true;
     document.getElementById("btn").textContent = "send message!";
-    milkcocoa.getCurrentUser(cbCurrentUser);
+    // Unityのloginを呼び出す
+    u.getUnity().SendMessage("CommMilkcocoa","login",textName.value);
   }
 
   var text = textArea.value;
@@ -45,3 +46,13 @@ function addText(text){
   msgDom.innerHTML = text;
   board.insertBefore(msgDom, board.firstChild);
 }
+
+function login_ok() {
+}
+
+function login_error() {
+  isLogin = false;
+  document.getElementById("btn").textContent = "login";
+  alert("同じ名前のユーザーがすでにいます。");
+}
+
