@@ -1,5 +1,5 @@
 var milkcocoa = new MilkCocoa("https://io-ji3ay1vq5.mlkcca.com");
-/* your-app-id ‚ÉƒAƒvƒŠì¬‚É”­s‚³‚ê‚é"io-"‚©‚çn‚Ü‚éapp-id‚ğ‹L“ü‚µ‚Ü‚· */
+/* your-app-id ã«ã‚¢ãƒ—ãƒªä½œæˆæ™‚ã«ç™ºè¡Œã•ã‚Œã‚‹"io-"ã‹ã‚‰å§‹ã¾ã‚‹app-idã‚’è¨˜å…¥ã—ã¾ã™ */
 var chatDataStore = milkcocoa.dataStore("chat");
 var textArea, board, textName, isLogin;
 window.onload = function(){
@@ -9,22 +9,14 @@ window.onload = function(){
   isLogin = false;
 }
 
-function cbCurrentUser(err,user) {
-  if (err != null) {
-    alert("error:"+err.toString());
-  }
-  else {
-    alert("userid="+user.id);
-  }
-}
-
 function clickEvent(){
   if (!isLogin) {
     isLogin = true;
     document.getElementById("btn").textContent = "send message!";
-    // Unity‚Ìlogin‚ğŒÄ‚Ño‚·
+    // Unityã®loginã‚’å‘¼ã³å‡ºã™
     u.getUnity().SendMessage("CommMilkcocoa","login",textName.value);
   }
+  u.getUnity().SendMessage("CommMilkcocoa","setMessage",textArea.value);
 
   var text = textArea.value;
   sendText(text);
@@ -32,7 +24,7 @@ function clickEvent(){
 
 function sendText(text){
   chatDataStore.push({message : text},function(data){
-    console.log("‘—MŠ®—¹!");
+    console.log("é€ä¿¡å®Œäº†!");
     textArea.value = "";
   });
 }
@@ -47,12 +39,24 @@ function addText(text){
   board.insertBefore(msgDom, board.firstChild);
 }
 
+// æˆåŠŸã€‚ç‰¹ã«ã‚„ã‚‹ã“ã¨ã¯ãªã„ã®ã§ç©º
 function login_ok() {
 }
 
+// ã‚¨ãƒ©ãƒ¼
 function login_error() {
   isLogin = false;
   document.getElementById("btn").textContent = "login";
-  alert("“¯‚¶–¼‘O‚Ìƒ†[ƒU[‚ª‚·‚Å‚É‚¢‚Ü‚·B");
+  alert("åŒã˜åå‰ã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒã™ã§ã«ã„ã¾ã™ã€‚");
 }
+
+// Unityã‹ã‚‰å‘¼ã³å‡ºã—ã¦ã€æ–‡å­—åˆ—ã‚’Milkcocoaã«é€ä¿¡ã™ã‚‹é–¢æ•°
+function sendMyData(dt) {
+  chatDataStore.send(dt);
+}
+
+// Milkcocoaã‹ã‚‰sendãŒå±Šã„ãŸæ™‚ã«å‘¼ã°ã‚Œã‚‹ã‚¤ãƒ™ãƒ³ãƒˆã€‚Unityã®updateData()é–¢æ•°ã‚’data.valueã‚’æ¸¡ã—ã¦å‘¼ã³å‡ºã™
+chatDataStore.on("send",function(data){
+  u.getUnity().SendMessage("CommMilkcocoa","updateData",data.value);
+});
 
